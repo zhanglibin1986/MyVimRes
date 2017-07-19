@@ -1,9 +1,9 @@
-安装Python3：
-    1.下载完python3源码：Python-3.6.2.tar
-    2.解压：xz -d Python-3.6.2.tar;tar Python-3.6.2.tar
-    3.创建安装目录$ sudo mkdir -p /usr/local/python3.6.2
-    4.指定到安装目录$ ./configure --prefix=/usr/local/python3.6.2
-    5.编译安装$ sudo make;sudo make install
+#安装Python3：
+##1.下载完python3源码：Python-3.6.2.tar
+##2.解压：xz -d Python-3.6.2.tar;tar Python-3.6.2.tar
+    ##3.创建安装目录$ sudo mkdir -p /usr/local/python3.6.2
+    ##4.指定到安装目录$ ./configure --prefix=/usr/local/python3.6.2
+    ##5.编译安装$ sudo make;sudo make install
         如果出错：zipimport.ZipImportError: can’t decompress data; zlib not available make: * [install] Error 1
         执行:sudo yum -y install zlib*
     6.安装成功后执行$ /usr/local/python3.6.2/bin/python3检查是否安装成功

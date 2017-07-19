@@ -254,3 +254,28 @@ ma – 创建一个书签，标记为a，如果你要创建全局书签，要用
 :marks a – 显示书签a的详细信息
 `. – 跳转到上次修改的行、列位置。
 ‘. – 跳转到上次修改的行位置。
+
+Subject vim calendar
+    1.安装：
+       从 https://github.com/itchyny/calendar.vim 下载下来压缩包，解压。把里面的内容放到 ~/.vim/ 里面即可。
+       使用方法可以参考压缩包中的doc文件
+
+Subject vim markdown
+    1.安装：
+        先用vundle安装：
+            Plugin 'godlygeek/tabular'
+            Plugin 'plasticboy/vim-markdown'     
+        安装之前需要先安装node.js和并且安装了npm.
+        安装完node.js之后安装instant-markdown-d:
+            $ sudo npm -g install instant-markdown-d
+        安装vim-instant-markdown插件：    
+            Plugin 'suan/vim-instant-markdown'
+        安装完成后，只要vim打开了markdown类型的文件就会自动打开一个浏览器窗口实时预览.
+        python-vim-instant-markdown插件是用python写的,windows,linux都可以使用，安装这个插件需要python2支持，查看vim是否有python支持:
+        vim --version | grep +python
+        安装依赖:
+        Plugin 'isnowfy/python-vim-instant-markdown'
+        或者将md_instant.vim和md_instant文件夹放到~/.vim/plugin/目录下，windows是vim安装目录的vimfiles/plugin文件夹。
+    2.使用
+        打开vim打开markdown文件后执行:Instantmd命令会自动打开一个浏览器窗口进行实时预览，如果浏览器没有自动打开窗口，可以访问http://localhost:7000/。
+

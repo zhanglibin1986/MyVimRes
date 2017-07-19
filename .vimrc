@@ -12,6 +12,11 @@ Plugin 'scrooloose/nerdtree' " 加入NERDTree
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'Align'
 Plugin 'junegunn/vim-easy-align'
+"markdown插件
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
+"markdown实时预览插件
+Plugin 'suan/vim-instant-markdown'
 "Install Plugins:run :PluginInstall
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
