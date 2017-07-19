@@ -6,7 +6,7 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'Lokaltog/vim-powerline'
 Plugin 'L9'
 Plugin 'scrooloose/syntastic'		"每次保存文件时Vim都会检查代码的语法
-Plugin 'Valloric/YouCompleteMe'
+"Plugin 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/nerdtree' " 加入NERDTree
 " 这个插件可以显示文件的Git增删状态
 Plugin 'Xuyuanp/nerdtree-git-plugin'
@@ -69,4 +69,4 @@ nnoremap <Leader>b :echo "Hello"<CR>
 "nnoremap <C-W><C-W> :echo "Success"<CR>
 "ctrl + w + w 在nerdtree侧栏打开时切换焦点
 nnoremap <Leader>a <C-W><C-W> 
-"test
+nnoremap <Leader>l :EasyAlign *|
