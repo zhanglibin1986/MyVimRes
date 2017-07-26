@@ -17,6 +17,8 @@ Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 "markdown实时预览插件
 Plugin 'suan/vim-instant-markdown'
+"vim-markdown-toc目录生成插件
+Plugin 'mzlogin/vim-markdown-toc'
 "Install Plugins:run :PluginInstall
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -35,7 +37,13 @@ set autoindent "自动缩进"
 inoremap jk <ESC>			"将ESC映射为jk
 set fileformat=unix			"以unix格式储存文件，避免在推送到Github或分享给其他用户时出现文件转换问题。
 set encoding=utf-8
+set backspace=2             "0是Vi compatible兼容模式，不能删除非本次插入模式键入的内容；1是:set backspace=indent,eol；2 same as “:set backspace=indent,eol,start
 set ignorecase smartcase    "搜索智能忽略大小写
+"设置markdown折叠相关
+"使用语法高亮定义代码折叠
+set foldmethod=syntax
+"打开文件是默认不折叠代码
+set foldlevelstart=99
 "au BufRead *.py map <buffer> <F5> :w<CR>:!/usr/bin/env python % <CR>    ".vimrc文件里加这个配置，按F5即可运行当前.py文件
 
 imap <C-CR> <ESC>o
