@@ -8,28 +8,47 @@
             * [数字寄存器](#数字寄存器)
             * [字母寄存器](#字母寄存器)
     * [剪切](#剪切)
+    * [翻页：](#翻页)
+    * [Subject search 搜索:](#subject-search-搜索)
+    * [光标移动：](#光标移动)
+    * [滚屏：](#滚屏)
+    * [插入：](#插入)
+    * [撤销和重做：u / ctrl+r](#撤销和重做u--ctrlr)
     * [大小写转换](#大小写转换)
     * [分屏：](#分屏)
+        * [调整高度和宽度](#调整高度和宽度)
+    * [同一个窗口打开多个文件](#同一个窗口打开多个文件)
+    * [vim 缓冲区](#vim-缓冲区)
     * [文件浏览](#文件浏览)
     * [Subject tab](#subject-tab)
     * [map](#map)
     * [控制命令：](#控制命令)
 * [插入模式下的命令](#插入模式下的命令)
     * [Subject 正则](#subject-正则)
+        * [简单替换表达式](#简单替换表达式)
     * [Subject NERDTree](#subject-nerdtree)
         * [快捷键](#快捷键)
-* [Vim Plugins](#vim-plugins)
-    * [vim-markdown-toc](#vim-markdown-toc)
-        * [命令](#命令)
+        * [Subject vim calendar](#subject-vim-calendar)
+        * [Subject vim markdown](#subject-vim-markdown)
+    * [Vim Plugins](#vim-plugins)
+        * [生成目录插件vim-markdown-toc](#生成目录插件vim-markdown-toc)
+            * [生成目录的命令](#生成目录的命令)
             * [更新已存在的 Table of Contents](#更新已存在的-table-of-contents)
             * [配置选项](#配置选项)
+        * [vim对齐插件](#vim对齐插件)
+    * [怎样编写一个 Shell 脚本 https://billie66.github.io/TLCL/book/zh/chap25.html](#怎样编写一个-shell-脚本-httpsbillie66githubiotlclbookzhchap25html)
+        * [脚本文件格式](#脚本文件格式)
+* [This is our first script.](#this-is-our-first-script)
+        * [可执行权限](#可执行权限)
+        * [脚本的存放位置](#脚本的存放位置)
+        * [脚本变量规则](#脚本变量规则)
 
 <!-- vim-markdown-toc -->
 # My note
 
 `:help cmd` 命令帮助  
 
-`:new + file新建文件  
+`:new + file`新建文件  
 
 ## 保存文件
 * :w或 :write  
@@ -87,17 +106,37 @@ dw  光标在单词首部，删除该单词
 J   删除两行之间的空行
 
 
-翻页：
+## 翻页：
 ctrl+f,b,d,u
 
-Subject search 搜索:
+## Subject search 搜索:  
+:%s/old/new/g           将所有出现的old替换为new  
+:%s/onward/forward/gi   将所有onward替换为forward，大小写不敏感  
+:%s/old/new/gc          替换前确认  
+:2,35s/old/new/g        将第2行到第35行之间的old替换为new  
+:5,$s/old/new/g         将第5行到文件结尾的old替换为new  
+:%s/^/hello/g           在每一行开头加入hello  
+:%s/$/Harry/g           在每一行结尾加入Harry  
+:%s/ *$//g              删除每行末尾无用空格  
+:g/string/d             删除所有包含string的行  
+:v/string/d             删除所有不包含string的行  
+:s/Bill/Steve/          替换当前行第一个Bill为Steve  
+:s/Bill/Steve/g         替换当前行中所有Bill  
+:%s/Bill/Steve/g        替换文件中所有Bill  
+:%s/^M//g               删掉DOS保存文件中(^M)  
+:%s/\r/\r/g             Transform DOS carriage returns in returns  
+:%s#<[^>]\+>##g         删除html标签但是保留文本  
+:%s/^\(.*\)\n\1$/\1/    删除所有连续出现过两次的行，保留一行  
+Ctrl+a                  递增光标下的数字  
+Ctrl+x                  递减光标下的数字  
+ggVGg?                  文本转换为 Rot13  
 
 
-光标移动：
-\`.  跳转到最近修改过的位置并定位编辑点
-'.  跳转到最近修改的位置的行首
+## 光标移动：
+`\`.`  跳转到最近修改过的位置并定位编辑点  
+`\'.`  跳转到最近修改的位置的行首  
 %   跳转到与之匹配的括号处k
-``  在前一次跳转位置与当前位置间切换
+\`\`  在前一次跳转位置与当前位置间切换
 f/F 查找/反向查找本行字符,光标定位到该字符的位置。
 t/T 查找/反向查找本行字符,光标定位到该字符前。
  
@@ -122,14 +161,14 @@ n)/}           光标向下移动n句/段落
 
 
 
-滚屏：
+## 滚屏：
 ctrl+e/y文字向上向下滚动
 z./zz 滚动屏幕使光标所在行居中，区别是前者光标会定位到行首而后者不会
 z<cr>将光标所在行滚动至屏幕顶端（<cr>是回车键-.-!）
 
 
 
-插入：
+## 插入：
 i,I
 a,A
 o,O
@@ -140,12 +179,12 @@ xp交换当前字符和其后一个字符
 
 
 
-撤销和重做：u / ctrl+r
+## 撤销和重做：u / ctrl+r
 
 ## 大小写转换
 * ~ 将光标下的字母改变大小写
 * 3~    将光标位置开始的3个字母改变其大小写
-* g~~   改变当前行字母的大小写
+* g\~\~   改变当前行字母的大小写
 * U     将可视模式下选择的字母全改成大写字母
 * u          将可视模式下选择的字母全改成小写
 * gUU        将当前行的字母改成大写
@@ -165,13 +204,34 @@ xp交换当前字符和其后一个字符
     * ctrl+w c/:q
     * ctrl+w o只保留当前分屏，等效于:only
     * qall(qa)   #退出所有窗口
+### 调整高度和宽度
+* 设置等宽等高
+    `ctrl + w + =`
+* 调整高度为显示n行的高度
+`:res[ize] n`
+或：`z{nr}<CR>`
+* 高度增加n行
+`ctrl + w + n+`
+* 高度减少n行  
+`ctrl + w + n-`
+* 设置屏为最大高度  
+`ctrl + w + _`
 
-同一个窗口打开多个文件
+
+* 调整宽度为n个字符的宽度
+`vertical res[ize] n`
+* 宽度增加n行
+`ctrl + w + n>`
+* 宽度减少n行  
+`ctrl + w + n<`
+
+## 同一个窗口打开多个文件
 vim file1 file2 ...
 切换：:bn下一个   :bp上一个
 更简单的:n下一个    :N上一个
 :n 跳至下一个文件，也可以直接指定要跳的文件，如:n c，可以直接跳到c文件
 
+## vim 缓冲区
 :e#或ctrl+^ 切换两个最近编辑的文件(不一定在同一个窗口)
 
 :ls或:files列出缓冲区的所有文档,:b num 切换列表中序号为num的文件
@@ -198,7 +258,6 @@ exit从shell回到vim
 :tabr 跳转到第一个标签页
 :bufdo tab split    把buffer中的文件全转成tab
 
-
 vim -d file1 file2 ...  #垂直打开多窗口,并且进行比较
 vimdiff file1 file2 ..  #等同于上一句
 
@@ -220,6 +279,24 @@ Alt键可以使用<M-key>或<A-key>来表示。<C>代表Ctrl.
 Ctrl-d 删除当前行的缩进
 
 ## Subject 正则
+http://tanqisen.github.io/blog/2013/01/13/vim-search-replace-regex/
+### 简单替换表达式
+
+`:[range]s/from/to/[flags]`  
+  
+* `range`:搜索范围，如果没有指定范围，则作用于但前行。  
+  
+1. :1,10s/from/to/ 表示在第1到第10行（包含第1，第10行）之间搜索替换；  
+1. :10s/from/to/ 表示只在第10行搜索替换；  
+1. :%s/from/to/ 表示在所有行中搜索替换；  
+1. 1,$s/from/to/ 同上。  
+* `flags` 有如下四个选项：  
+  
+1. c confirm，每次替换前询问；  
+2. e error， 不显示错误；  
+3. g globle，不询问，整行替换。如果不加g选项，则只替换每行的第一个匹配到的字符串；  
+4. i ignore，忽略大小写。  
+这些选项可以合并使用，如cgi表示不区分大小写，整行替换，替换前询问。  
 
 ## Subject NERDTree
 http://yang3wei.github.io/blog/2013/01/29/nerdtree-kuai-jie-jian-ji-lu/
@@ -309,12 +386,15 @@ ma – 创建一个书签，标记为a，如果你要创建全局书签，要用
 `. – 跳转到上次修改的行、列位置。
 ‘. – 跳转到上次修改的行位置。
 
-Subject vim calendar
-    1.安装：
+### Subject vim calendar
+    1. 安装第三方实现：
        从 https://github.com/itchyny/calendar.vim 下载下来压缩包，解压。把里面的内容放到 ~/.vim/ 里面即可。
-       使用方法可以参考压缩包中的doc文件
+       使用方法可以参考压缩包中的doc文件(这个不好用，已卸载)
+    2. 安装vim官方插件：从http://www.vim.org/scripts/script.php?script_id=52 下载calendar-vim;将其中的doc，autoload，plugin文件夹放到~/.vim文件夹下即可。打开vim，执行`:Calendar`  
 
-Subject vim markdown
+    
+
+### Subject vim markdown
     1.安装：
         先用vundle安装：
             Plugin 'godlygeek/tabular'
@@ -332,12 +412,11 @@ Subject vim markdown
         或者将md_instant.vim和md_instant文件夹放到~/.vim/plugin/目录下，windows是vim安装目录的vimfiles/plugin文件夹。
     2.使用
         打开vim打开markdown文件后执行:Instantmd命令会自动打开一个浏览器窗口进行实时预览，如果浏览器没有自动打开窗口，可以访问http://localhost:7000/。
-
-# Vim Plugins
-## vim-markdown-toc
+## Vim Plugins
+### 生成目录插件vim-markdown-toc
 Plugin 'mzlogin/vim-markdown-toc'
 https://github.com/mzlogin/vim-markdown-toc
-###命令
+####生成目录的命令
 1. `:GenTocGFM`  
 生成 GFM 链接风格的 Table of Contents。  
 适用于 GitHub 仓库里的 Markdown 文件，比如 README.md，也适用用于生成 GitBook 的 Markdown 文件。  
@@ -379,3 +458,100 @@ let g:vmt_cycle_list_item_markers = 1
         + [Level 1-2-1](#level-1-2-1)
 * [Level 2](level-2)
 这不会影响 Markdown 文档解析后的显示效果，只用于提升源文件的可读性。
+### vim对齐插件
+* 参考博客：http://www.wklken.me/posts/2015/06/07/vim-plugin-easyalign.html
+* Github：https://github.com/junegunn/vim-easy-align
+* 常用命令:
+    * 命令模式下对齐段内所所有|:  
+    `vipga *|`
+## 怎样编写一个 Shell 脚本 https://billie66.github.io/TLCL/book/zh/chap25.html
+这个教程也挺好的:http://www.runoob.com/linux/linux-shell-variable.html
+
+### 脚本文件格式
+下面是“hello world” 脚本：  
+`#!/bin/bash
+# This is our first script.
+echo 'Hello World!'`
+
+这个#!字符序列是一种特殊的结构叫做 shebang。 这个 shebang 被用来告诉操作系统将执行此脚本所用的解释器的名字。每个 shell 脚本都应该把这一文本行 作为它的第一行。
+
+让我们把此脚本文件保存为 hello_world。
+### 可执行权限
+下一步我们要做的事情是让我们的脚本可执行。使用 chmod 命令  
+写完脚本后一定要赋予权限：chmod 755 ~/bin/sys_info_page  
+或：`chmod +x ./test.sh`  #使脚本具有执行权限
+对于脚本文件，有两个常见的权限设置；权限为755的脚本，则每个人都能执行，和权限为700的 脚本，只有文件所有者能够执行。注意为了能够执行脚本，脚本必须是可读的。  
+### 脚本的存放位置
+* ~/bin
+一般个人脚本放在这个目录下
+* /usr/local/bin
+如果放到这个目录下，那么系统所有的用户都可以使用它
+* /usr/local/sbin
+一般存放系统管理员的脚本
+* /usr/local
+大多数情况下，本地支持的软件，不管是脚本还是编译过的程序，都应该放到 /usr/local 目录下， 而不是在 /bin 或 /usr/bin 目录下。这些目录都是由 Linux 文件系统层次结构标准指定，只包含由 Linux 发行商 所提供和维护的文件。
+
+### 脚本变量规则
+* https://billie66.github.io/TLCL/book/zh/chap26.html
+* 定义一个变量  
+`title="System Information Report"`  
+* **注意**
+1. 变量名可由字母数字字符（字母和数字）和下划线字符组成。
+1. 变量名的第一个字符必须是一个字母或一个下划线。
+1. 变量名中不允许出现空格和标点符号;变量名，等号和变量值之间必须没有空格。
+1. 可以在同一行中对多个变量赋值。
+    `a=5 b="a string"`
+1. 在参数展开过程中,可以用花括号把变量包起来。echo ${title} 可以避免上下文导致的歧义。
+    `[me@linuxbox ~]$ filename="myfile"
+[me@linuxbox ~]$ touch $filename
+[me@linuxbox ~]$ mv $filename $filename1
+mv: missing destination file operand after \`myfile'
+Try \`mv --help' for more information.`
+这种尝试失败了，因为 shell 把 mv 命令的第二个参数解释为一个新的（并且空的）变量。通过这种方法 可以解决这个问题：
+
+`[me@linuxbox ~]$ mv $filename ${filename}1`  
+通过添加花括号，shell 不再把末尾的1解释为变量名的一部分。
+* 定义只读变量
+readonly myUrl
+* 删除变量(不能删除只读变量)
+unset variable_name
+* 单引号和双引号
+单引号里的任何字符都会原样输出，单引号字符串中的变量是无效的；  
+单引号字串中不能出现单引号（对单引号使用转义符后也不行）。  
+双引号里可以有变量  
+双引号里可以出现转义字符  
+`your_name='qinjx'  
+str="Hello, I know your are \"$your_name\"! \n"`
+
+* 获取字符串长度
+
+string="abcd"
+
+echo ${#string} #输出 4
+* 提取子字符串
+`string="runoob is a great site"  
+echo ${string:1:4} # 输出 unoo`
+* 查找子字符串
+    `string="runoob is a great company"  
+    echo `expr index "$string" is`  # 输出 8`
+* 运算符
+原生bash不支持简单的数学运算，但是可以通过其他命令来实现，例如 awk 和 expr，expr 最常用。
+expr 是一款表达式计算工具，使用它能完成表达式的求值操作。
+
+val=`expr 2 + 2`
+
+a=10 b=20
+
+echo "a + b = `expr $a + $b`"
+
+注意+两边的空格！
+
+echo "a * b = `expr $a \* $b`"
+
+
+if [ $a -gt $b ]
+then 
+    echo echo "[ $a -gt $b ] is true"
+else 
+    echo echo "[ $a -gt $b ] is false"
+fi

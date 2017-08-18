@@ -25,7 +25,7 @@ call vundle#end()            " required
 filetype plugin indent on    " required
 set shell=/bin/bash
 set nu                      "显示行号"
-syntax on                   "命令打开语法高亮度。
+syntax on                  "命令打开语法高亮度。
 set ts=4                    "set tabstop 的缩写。 一个tab键所占的列数，linux 内核代码建议每个tab占用8列,所以不设置的话默认是占8列(ps：:set list 可以查看tab符号）
 set shiftwidth=4 "这个量是每行的缩进深度，一般设置成和tabstop一样的宽度"
 set expandtab               "set expandtab 输入tab时自动将其转化为空格(取消expandtab::set noexpandtab
@@ -39,6 +39,7 @@ set fileformat=unix			"以unix格式储存文件，避免在推送到Github或�
 set encoding=utf-8
 set backspace=2             "0是Vi compatible兼容模式，不能删除非本次插入模式键入的内容；1是:set backspace=indent,eol；2 same as “:set backspace=indent,eol,start
 set ignorecase smartcase    "搜索智能忽略大小写
+
 "设置markdown折叠相关
 "使用语法高亮定义代码折叠
 set foldmethod=syntax
@@ -83,3 +84,4 @@ nnoremap <Leader>b :echo "Hello"<CR>
 "ctrl + w + w 在nerdtree侧栏打开时切换焦点
 nnoremap <Leader>a <C-W><C-W> 
 nnoremap <Leader>l :EasyAlign *|
+
