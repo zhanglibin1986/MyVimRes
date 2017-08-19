@@ -10,7 +10,7 @@ commit(){
 }
 if [ -z $1 ]
 then
-    commit -m "auto commit by shell `date`"
+    commit "auto commit by shell `date`"
     echo "commit default message:auto commit by shell `date`"
 else
 #    echo "输入的参数是${*}"
