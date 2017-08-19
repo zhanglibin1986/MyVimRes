@@ -4,6 +4,7 @@
 * [命令eval](#命令eval)
 * [[SSH keys](https://wiki.archlinux.org/index.php/SSH_keys_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87))](#ssh-keyshttpswikiarchlinuxorgindexphpssh_keys_e7ae80e4bd93e4b8ade69687)
 * [安装vundle](#安装vundle)
+* [ubuntu第一次安装提交github遇到的问题记录](#ubuntu第一次安装提交github遇到的问题记录)
 
 <!-- vim-markdown-toc -->
 * gdebi
@@ -140,3 +141,77 @@ SH 密钥对可以让您方便的登录到 SSH 服务器，而无需输入密码
 再输入
 `:PluginInstall`
 4. 注意最好在.vimrc配置文件中加入：`set shell=/bin/bash`
+
+## ubuntu第一次安装提交github遇到的问题记录
+git add .后：
+``` bash
+zhanglibin@zhanglibin:~/mygithub/MyVimRes$ git commit -m 'ubuntu change'
+
+*** Please tell me who you are.
+
+Run
+
+  git config --global user.email "you@example.com"
+    git config --global user.name "Your Name"
+
+    to set your account's default identity.
+    Omit --global to set the identity only in this repository.
+
+    fatal: unable to auto-detect email address (got 'zhanglibin@zhanglibin.(none)')
+```
+好吧，我就按照提示来配置了邮件和名字，这个邮件和名字应该是用来在github仓库中显示谁提交了代码的。
+``` bash
+zhanglibin@zhanglibin:~/mygithub/MyVimRes$ git config --global user.email "zhanglibinhebei@gmail.com"
+zhanglibin@zhanglibin:~/mygithub/MyVimRes$ git config --global user.name "zhanglibin"
+zhanglibin@zhanglibin:~/mygithub/MyVimRes$ git commit -m 'ubuntu first commit'
+[master 4b3f2f6] ubuntu first commit
+ 2 files changed, 160 insertions(+)
+ create mode 100755 shell/commit_vimres_ubuntu.sh
+ create mode 100644 ubuntu_log.md
+zhanglibin@zhanglibin:~/mygithub/MyVimRes$
+```
+commit 成功了！接下来push
+
+``` bash
+zhanglibin@zhanglibin:~/mygithub/MyVimRes$ git push
+warning: push.default 尚未设置，它的默认值在 Git 2.0 已从 'matching'
+变更为 'simple'。若要不再显示本信息并保持传统习惯，进行如下设置：
+
+  git config --global push.default matching
+
+若要不再显示本信息并从现在开始采用新的使用习惯，设置：
+
+  git config --global push.default simple
+
+当 push.default 设置为 'matching' 后，git 将推送和远程同名的所有
+本地分支。
+
+从 Git 2.0 开始，Git 默认采用更为保守的 'simple' 模式，只推送当前
+分支到远程关联的同名分支，即 'git push' 推送当前分支。
+
+参见 'git help config' 并查找 'push.default' 以获取更多信息。
+（'simple' 模式由 Git 1.7.11 版本引入。如果您有时要使用老版本的 Git，
+为保持兼容，请用 'current' 代替 'simple'）
+
+fatal: unable to access 'https://github.com/zhanglibin1986/MyVimRes.git/': Failed to connect to 127.0.0.1 port 42487: 拒绝连接
+
+```
+出现了错误！
+那么就先根据提示采用保守的simple模式吧
+``` bash
+zhanglibin@zhanglibin:~/mygithub/MyVimRes$ git config --global push.default simple
+zhanglibin@zhanglibin:~/mygithub/MyVimRes$ git push
+Username for 'https://github.com': zhanglibin1986
+Password for 'https://zhanglibin1986@github.com': 
+对象计数中: 5, 完成.
+Delta compression using up to 4 threads.
+压缩对象中: 100% (5/5), 完成.
+写入对象中: 100% (5/5), 3.52 KiB | 0 bytes/s, 完成.
+Total 5 (delta 1), reused 0 (delta 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/zhanglibin1986/MyVimRes.git
+   9ffd318..4b3f2f6  master -> master
+zhanglibin@zhanglibin:~/mygithub/MyVimRes$
+```
+最后还输入了github的用户名和密码。但是我已经提前配好了Github的ssh keys啊！
+先写到这里，权做记录这一天的折腾过程。这两天好好研究一下git。但愿能再写一片比较好的git博客出来。
