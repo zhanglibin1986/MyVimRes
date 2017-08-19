@@ -38,7 +38,6 @@
         * [vim对齐插件](#vim对齐插件)
     * [怎样编写一个 Shell 脚本 https://billie66.github.io/TLCL/book/zh/chap25.html](#怎样编写一个-shell-脚本-httpsbillie66githubiotlclbookzhchap25html)
         * [脚本文件格式](#脚本文件格式)
-* [This is our first script.](#this-is-our-first-script)
         * [可执行权限](#可执行权限)
         * [脚本的存放位置](#脚本的存放位置)
         * [脚本变量规则](#脚本变量规则)
@@ -469,10 +468,11 @@ let g:vmt_cycle_list_item_markers = 1
 
 ### 脚本文件格式
 下面是“hello world” 脚本：  
-`#!/bin/bash
+``` bash
+#!/bin/bash
 # This is our first script.
-echo 'Hello World!'`
-
+echo 'Hello World!'
+```
 这个#!字符序列是一种特殊的结构叫做 shebang。 这个 shebang 被用来告诉操作系统将执行此脚本所用的解释器的名字。每个 shell 脚本都应该把这一文本行 作为它的第一行。
 
 让我们把此脚本文件保存为 hello_world。
@@ -491,10 +491,11 @@ echo 'Hello World!'`
 * /usr/local
 大多数情况下，本地支持的软件，不管是脚本还是编译过的程序，都应该放到 /usr/local 目录下， 而不是在 /bin 或 /usr/bin 目录下。这些目录都是由 Linux 文件系统层次结构标准指定，只包含由 Linux 发行商 所提供和维护的文件。
 
-### 脚本变量规则
-* https://billie66.github.io/TLCL/book/zh/chap26.html
+### [脚本变量规则](https://billie66.github.io/TLCL/book/zh/chap26.html)
 * 定义一个变量  
-`title="System Information Report"`  
+``` bash
+title="System Information Report"
+```  
 * **注意**
 1. 变量名可由字母数字字符（字母和数字）和下划线字符组成。
 1. 变量名的第一个字符必须是一个字母或一个下划线。
@@ -502,11 +503,13 @@ echo 'Hello World!'`
 1. 可以在同一行中对多个变量赋值。
     `a=5 b="a string"`
 1. 在参数展开过程中,可以用花括号把变量包起来。echo ${title} 可以避免上下文导致的歧义。
-    `[me@linuxbox ~]$ filename="myfile"
-[me@linuxbox ~]$ touch $filename
-[me@linuxbox ~]$ mv $filename $filename1
+``` bash
+$ filename="myfile"
+$ touch $filename
+$ mv $filename $filename1
 mv: missing destination file operand after \`myfile'
-Try \`mv --help' for more information.`
+Try \`mv --help' for more information.
+```
 这种尝试失败了，因为 shell 把 mv 命令的第二个参数解释为一个新的（并且空的）变量。通过这种方法 可以解决这个问题：
 
 `[me@linuxbox ~]$ mv $filename ${filename}1`  
@@ -529,23 +532,28 @@ string="abcd"
 
 echo ${#string} #输出 4
 * 提取子字符串
-`string="runoob is a great site"  
-echo ${string:1:4} # 输出 unoo`
+``` bash
+string="runoob is a great site"  
+echo ${string:1:4} # 输出 unoo
+```
 * 查找子字符串
-    `string="runoob is a great company"  
-    echo `expr index "$string" is`  # 输出 8`
+``` bash
+string="runoob is a great company"  
+echo `expr index "$string" is`  # 输出 8
+```
 * 运算符
 原生bash不支持简单的数学运算，但是可以通过其他命令来实现，例如 awk 和 expr，expr 最常用。
 expr 是一款表达式计算工具，使用它能完成表达式的求值操作。
 
+``` bash
 val=`expr 2 + 2`
 
 a=10 b=20
 
 echo "a + b = `expr $a + $b`"
-
+```
 注意+两边的空格！
-
+``` bash
 echo "a * b = `expr $a \* $b`"
 
 
@@ -555,3 +563,4 @@ then
 else 
     echo echo "[ $a -gt $b ] is false"
 fi
+```
