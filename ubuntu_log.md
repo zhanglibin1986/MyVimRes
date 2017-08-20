@@ -24,7 +24,7 @@ Your identification has been saved in y.
 Your public key has been saved in y.pub.
 The key fingerprint is:
 SHA256:gGYs98gYdf/8kSqR8++BDkuMAKPmYGFTLOJzvOzLRn4 zhanglibinhebei@gmail.com
-The key's randomart image is:
+The key\'s randomart image is:
 +---[RSA 4096]----+
 |  ... .          |
 |...+ o .         |
