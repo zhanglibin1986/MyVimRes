@@ -10,7 +10,8 @@ commit(){
 }
 if [ -z $1 ]
 then
-    echo "请在$0后输入commit message,谢谢！"
+    commit "auto commit by shell from company `date`"
+    echo "commit default message:auto commit by shell `date`"
 else
 #    echo "输入的参数是${*}"
 commit $1
