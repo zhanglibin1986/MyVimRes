@@ -215,3 +215,5 @@ zhanglibin@zhanglibin:~/mygithub/MyVimRes$
 ```
 最后还输入了github的用户名和密码。但是我已经提前配好了Github的ssh keys啊！
 先写到这里，权做记录这一天的折腾过程。这两天好好研究一下git。但愿能再写一片比较好的git博客出来。
+
+
