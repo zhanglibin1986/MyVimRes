@@ -43,9 +43,11 @@ set ignorecase smartcase    "搜索智能忽略大小写
 "设置markdown折叠相关
 "使用语法高亮定义代码折叠
 "set foldmethod=marker
-set foldmethod=syntax
+"set foldmethod=syntax
+set foldmethod=manual
 "打开文件是默认不折叠代码
-"set foldlevelstart=100
+"http://vimcdoc.sourceforge.net/doc/options.html#'foldlevelstart'
+set foldlevelstart=99
 "au BufRead *.py map <buffer> <F5> :w<CR>:!/usr/bin/env python % <CR>    ".vimrc文件里加这个配置，按F5即可运行当前.py文件
 
 imap <C-CR> <ESC>o

@@ -41,6 +41,15 @@
         * [可执行权限](#可执行权限)
         * [脚本的存放位置](#脚本的存放位置)
         * [脚本变量规则](#脚本变量规则)
+        * [将命令的输出赋值给shell的变量](#将命令的输出赋值给shell的变量)
+        * [shell打印当前时间](#shell打印当前时间)
+        * [shell从文件读内容到变量](#shell从文件读内容到变量)
+    * [vim折叠](#vim折叠)
+        * [vim缩进调整](#vim缩进调整)
+    * [subject hexo](#subject-hexo)
+    * [vim寄存器](#vim寄存器)
+        * [vim命令](#vim命令)
+        * [选中文本命令](#选中文本命令)
 
 <!-- vim-markdown-toc -->
 # My note
@@ -564,3 +573,85 @@ else
     echo echo "[ $a -gt $b ] is false"
 fi
 ```
+
+### 将命令的输出赋值给shell的变量
+* git branch的输出
+    ``` bash
+    BreadTripMacPro:BreadBnb breadtripmacpro$ branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
+    BreadTripMacPro:BreadBnb breadtripmacpro$ echo $branch
+    master
+    ```
+    或者：  
+    ``` bash
+    BreadTripMacPro:BreadBnb breadtripmacpro$ c=$(git branch | grep "*")
+    BreadTripMacPro:BreadBnb breadtripmacpro$ echo $c
+    app build build.gradle gradle gradle.properties gradlew gradlew.bat local.properties settings.gradle test master
+    BreadTripMacPro:BreadBnb breadtripmacpro$ branch1=${c:2}
+    BreadTripMacPro:BreadBnb breadtripmacpro$ echo $branch1
+    master
+    ```
+    实际应用：
+    ``` bash
+branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
+if [ $branch = 'develop' ]
+then
+	curl -F "file=@/Users/Shared/Jenkins/Home/workspace/BreadtripBnbAndroid/app/build/outputs/apk/pub/release/app-pub-release.apk" -F "uKey=xxx" -F "_api_key=xxx" https://qiniu-storage.pgyer.com/apiv1/app/upload
+fi
+    ```
+### shell打印当前时间
+``` bash
+$ echo `date +%Y-%m-%d\ %H:%M:%S`
+2017-08-30 13:50:09
+```
+### shell从文件读内容到变量
+有文件名为cm_time
+mytime=$(cat cm_time)就把文件内容读到了mytime变量中
+
+## vim折叠
+http://vimcdoc.sourceforge.net/doc/usr_28.html#usr_28.txt
+:set foldmethod=mark
+可以使用:set foldenable命令来启动折叠。
+vim将折叠等同于行来对待——你可以使用j或k命令，移动跳过包含多行的整个折叠；也可以使用y或d命令，复制或删除某个折叠。
+通常在折叠处向左或向右移动光标，或者进入插入模式，都将会自动打开折叠。我们也可以使用以下命令定义快捷键，使用空格键关闭当前打开的折叠，或者打开当前关闭的折叠。  
+按照折叠所依据的规则，可以分为manual（手工折叠）、indent（缩进折叠）、marker（标记折叠）和syntax（语法折叠）等几种。gtgt  
+经调查set foldmethod=marker时比较好用。
+折叠文件中的所有代码： 快捷按键 zm
+取消文件中所有代码的折叠： 快捷按键 zr
+
+:set foldmethod? 查看当前的折叠模式
+zf创建折叠
+zc折叠
+zo打开折叠
+za 打开关闭的折叠，或关闭打开的折叠
+zd删除光标下的折叠
+zD循环删除
+zv 打开足够的折叠，使得当前行可见
+zM 关闭所有 设置 'foldlevel' 为零
+zR 打开所有 设置 'foldlevel' 为最大折叠级别
+zE取消所有折叠
+zj移动到下一个折叠处
+zk移动到上一个折叠处
+
+### vim缩进调整
+>> 向右缩进  
+<< 向左缩进
+
+## subject hexo
+浏览器同步插件：[hexo-browsersync](https://github.com/hexojs/hexo-browsersync)
+
+## vim寄存器
+http://vimcdoc.sourceforge.net/doc/usr_24.html#24.6
+<test 尖括号>
+[test 尖括号]
+{test 尖括号}
+{test 尖括号}
+(test 小括号)
+### vim命令
+zz 将当前行定位到屏幕中间
+zt/z<CR> 将当前行定位到第一行
+zb 将当前行定位最后一行
+
+### 选中文本命令
+* i + '/"/</[/{/( 选中以上范围内的内容，比如vi[是选中[]内的内容,yi(是复制括号中的内容
+* a + '/"/</[/{/( 选中以上范围内的内容，比如vi[是选中[]内的内容,yi(是复制括号中的内容
+
