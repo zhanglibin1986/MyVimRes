@@ -646,12 +646,19 @@ http://vimcdoc.sourceforge.net/doc/usr_24.html#24.6
 {test 尖括号}
 {test 尖括号}
 (test 小括号)
+"test 小括号"
 ### vim命令
-zz 将当前行定位到屏幕中间
-zt/z<CR> 将当前行定位到第一行
-zb 将当前行定位最后一行
+* zz 将当前行定位到屏幕中间
+* zt/z<CR> 将当前行定位到第一行
+* zb 将当前行定位最后一行
+* :verb set foldmethod? 查询
+``` bash
+foldmethod=expr
+        Last set from ~/.vim/bundle/vim-markdown/after/ftplugin/markdown.vim
+```
+* :sh[ell]  启动一个shell外壳，执行完exit后回到vim
 
 ### 选中文本命令
 * i + '/"/</[/{/( 选中以上范围内的内容，比如vi[是选中[]内的内容,yi(是复制括号中的内容
-* a + '/"/</[/{/( 选中以上范围内的内容，比如vi[是选中[]内的内容,yi(是复制括号中的内容
+* a + '/"/</[/{/( 选中以上范围内的内容(包括'[]')，比如va[是选中[]内的内容(包括'[]'),yi(是复制括号中的内容(包括'[]')
 
