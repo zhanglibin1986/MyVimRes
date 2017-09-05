@@ -50,6 +50,7 @@
     * [vim寄存器](#vim寄存器)
         * [vim命令](#vim命令)
         * [选中文本命令](#选中文本命令)
+        * [git log](#git-log)
 
 <!-- vim-markdown-toc -->
 # My note
@@ -638,6 +639,18 @@ zk移动到上一个折叠处
 
 ## subject hexo
 浏览器同步插件：[hexo-browsersync](https://github.com/hexojs/hexo-browsersync)
+运行hexo s时报错：
+``` bash
+FATAL Something's wrong. Maybe you can find the solution here: http://hexo.io/docs/troubleshooting.html
+Template render error: (unknown path)
+  Error: expected end of comment, got end of file
+    at Object.exports.prettifyError (/Users/zhanglibin/myblog/node_modules/hexo/node_modules/nunjucks/src/lib.js:34:15)
+```
+原因：  
+内容包含了`{#`。o
+>查了一下，{# 是 nunjucks 的注释标记， http://mozilla.github.io/nunjucks/templating.html#comments。
+>所以只有半个的话，就挂了。
+>所以解决办法是 {% raw %}{#{% endraw %} 但是这样 post 内容就不是纯的 markdown 了。
 
 ## vim寄存器
 http://vimcdoc.sourceforge.net/doc/usr_24.html#24.6
@@ -661,4 +674,8 @@ foldmethod=expr
 ### 选中文本命令
 * i + '/"/</[/{/( 选中以上范围内的内容，比如vi[是选中[]内的内容,yi(是复制括号中的内容
 * a + '/"/</[/{/( 选中以上范围内的内容(包括'[]')，比如va[是选中[]内的内容(包括'[]'),yi(是复制括号中的内容(包括'[]')
+### git log
+git log --graph --oneline --all  
+git log -2 显示两条记录  
+git log --since="2017-08-01 00:00:00" 显示自从指定时间点到现在的log  
 
