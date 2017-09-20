@@ -47,10 +47,14 @@
     * [vim折叠](#vim折叠)
         * [vim缩进调整](#vim缩进调整)
     * [subject hexo](#subject-hexo)
+        * [评论和计数功能的实现](#评论和计数功能的实现)
     * [vim寄存器](#vim寄存器)
         * [vim命令](#vim命令)
         * [选中文本命令](#选中文本命令)
         * [git log](#git-log)
+    * [软链接硬链接](#软链接硬链接)
+        * [查看某个文件的软硬链接](#查看某个文件的软硬链接)
+    * [vim 插入当前日期时间](#vim-插入当前日期时间)
 
 <!-- vim-markdown-toc -->
 # My note
@@ -644,13 +648,16 @@ zk移动到上一个折叠处
 FATAL Something's wrong. Maybe you can find the solution here: http://hexo.io/docs/troubleshooting.html
 Template render error: (unknown path)
   Error: expected end of comment, got end of file
-    at Object.exports.prettifyError (/Users/zhanglibin/myblog/node_modules/hexo/node_modules/nunjucks/src/lib.js:34:15)
+    at Object.exports.prettifyError (/szUsers/zhanglibin/myblog/node_modules/hexo/node_modules/nunjucks/src/lib.js:34:15)
 ```
 原因：  
 内容包含了`{#`。o
 >查了一下，{# 是 nunjucks 的注释标记， http://mozilla.github.io/nunjucks/templating.html#comments。
 >所以只有半个的话，就挂了。
 >所以解决办法是 {% raw %}{#{% endraw %} 但是这样 post 内容就不是纯的 markdown 了。
+### 评论和计数功能的实现
+http://ibruce.info/2015/04/04/busuanzi/
+https://zhiho.github.io/2015/09/29/hexo-next/
 
 ## vim寄存器
 http://vimcdoc.sourceforge.net/doc/usr_24.html#24.6
@@ -679,3 +686,15 @@ git log --graph --oneline --all
 git log -2 显示两条记录  
 git log --since="2017-08-01 00:00:00" 显示自从指定时间点到现在的log  
 
+## 软链接硬链接
+### 查看某个文件的软硬链接
+## vim 插入当前日期时间
+    `:.!date`  
+    或`!!date`
+    或`:r!date`
+
+其实效果是一样的
+
+2017年 9月14日 星期四 12时25分02秒 CST
+2017年 9月14日 星期四 12时25分14秒 CST
+2017年 9月14日 星期四 12时25分29秒 CST
