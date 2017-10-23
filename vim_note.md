@@ -1,6 +1,6 @@
 
 <!-- vim-markdown-toc GFM -->
-* [My note](#my-note)
+* [Vim note](#vim-note)
     * [保存文件](#保存文件)
     * [可视模式选择文本](#可视模式选择文本)
     * [复制](#复制)
@@ -9,12 +9,16 @@
             * [字母寄存器](#字母寄存器)
     * [剪切](#剪切)
     * [翻页：](#翻页)
-    * [Subject search 搜索:](#subject-search-搜索)
+    * [Subject search 搜索 查找 替换:](#subject-search-搜索-查找-替换)
+        * [查找当前光标下的单词：](#查找当前光标下的单词)
+        * [搜索文本](#搜索文本)
+    * [Subject 正则](#subject-正则)
+        * [简单替换表达式](#简单替换表达式)
     * [光标移动：](#光标移动)
     * [滚屏：](#滚屏)
     * [插入：](#插入)
     * [撤销和重做：u / ctrl+r](#撤销和重做u--ctrlr)
-    * [大小写转换](#大小写转换)
+    * [Subject 大小写转换](#subject-大小写转换)
     * [分屏：](#分屏)
         * [调整高度和宽度](#调整高度和宽度)
     * [同一个窗口打开多个文件](#同一个窗口打开多个文件)
@@ -23,9 +27,7 @@
     * [Subject tab](#subject-tab)
     * [map](#map)
     * [控制命令：](#控制命令)
-* [插入模式下的命令](#插入模式下的命令)
-    * [Subject 正则](#subject-正则)
-        * [简单替换表达式](#简单替换表达式)
+    * [插入模式下的命令](#插入模式下的命令)
     * [Subject NERDTree](#subject-nerdtree)
         * [快捷键](#快捷键)
         * [Subject vim calendar](#subject-vim-calendar)
@@ -42,6 +44,10 @@
         * [脚本的存放位置](#脚本的存放位置)
         * [脚本变量规则](#脚本变量规则)
         * [将命令的输出赋值给shell的变量](#将命令的输出赋值给shell的变量)
+* [c_date=$(cat /Users/Shared/Jenkins/Home/workspace/BreadtripBnbAndroid/../compile_date)](#c_datecat-userssharedjenkinshomeworkspacebreadtripbnbandroidcompile_date)
+* [commit_msg=$(git log \--since="\"$c_date\"" \--pretty=format:"%ar : %s")](#commit_msggit-log---sincec_date---prettyformatar--s)
+* [git log --since="$(cat $BNB_HOME/../compile_date)" --stat > $BNB_HOME/../commit_log](#git-log---sincecat-bnb_homecompile_date---stat--bnb_homecommit_log)
+* [python /Users/breadtripmacpro/android/ci/send_email.py](#python-usersbreadtripmacproandroidcisend_emailpy)
         * [shell打印当前时间](#shell打印当前时间)
         * [shell从文件读内容到变量](#shell从文件读内容到变量)
     * [vim折叠](#vim折叠)
@@ -55,9 +61,19 @@
     * [软链接硬链接](#软链接硬链接)
         * [查看某个文件的软硬链接](#查看某个文件的软硬链接)
     * [vim 插入当前日期时间](#vim-插入当前日期时间)
+    * [vim创建新的命令](#vim创建新的命令)
+    * [iskeyword](#iskeyword)
+    * [vim缩写](#vim缩写)
+        * [设置缩写](#设置缩写)
+        * [不同模式下的缩写](#不同模式下的缩写)
+        * [缩写实例](#缩写实例)
+        * [查看缩写](#查看缩写)
+        * [取消缩写](#取消缩写)
+    * [快速插入已经编辑过的词](#快速插入已经编辑过的词)
+    * [Linux curl命令详解](#linux-curl命令详解)
 
 <!-- vim-markdown-toc -->
-# My note
+# Vim note
 
 `:help cmd` 命令帮助  
 
@@ -77,6 +93,7 @@ v/V/ctrl+v分别是逐字/逐行/区域选择
 按o光标回到起点可反向选择。选择中可以切换选择模式。  
 选中之后可以做的操作除了“y“复制以外，还可以有如下操作：  
 `d剪切 c修改 r替换 I在选中文本前插入 A在选中文本后插入 gu选中区域转为小写 gU选中区域转为大写 g~大小写互调 > 向右缩进一个单位 < 向左缩进一个单位`  
+
   
 区域选择模式可在多行行首或行末插入内容。方法是区块选中后，按I或A在文本前/后插入内容，然后按 `<Esc>` 即可。  
 删除多行注释:ctrl+v进入列模式;选中要取消注释的多行；如果要删除“//”按下2x即可。  
@@ -122,7 +139,7 @@ J   删除两行之间的空行
 ## 翻页：
 ctrl+f,b,d,u
 
-## Subject search 搜索:  
+## Subject search 搜索 查找 替换:  
 :%s/old/new/g           将所有出现的old替换为new  
 :%s/onward/forward/gi   将所有onward替换为forward，大小写不敏感  
 :%s/old/new/gc          替换前确认  
@@ -144,6 +161,45 @@ Ctrl+a                  递增光标下的数字
 Ctrl+x                  递减光标下的数字  
 ggVGg?                  文本转换为 Rot13  
 
+### 查找当前光标下的单词：
+上一个: #
+下一个： *
+
+### 搜索文本
+/待搜索文本     :n下一个，N上一个
+/待搜索文本/c     忽略大小写    :n下一个，N上一个
+\'.               : 跳到最后修改的那一行 (超级有用)(ft,怎么又是这个评价)
+`.               : 不仅跳到最后修改的那一行，还要定位到修改点
+<C-O>            : 依次沿着你的跳转记录向回跳 (从最近的一次开始)
+<C-I>            : 依次沿着你的跳转记录向前跳
+:ju(mps)         : 列出你跳转的足迹
+:help jump-motions
+:history         : 列出历史命令记录
+:his c           : 命令行命令历史
+:his s           : 搜索命令历史
+q/               : 搜索命令历史的窗口
+q:               : 命令行命令历史的窗口
+:<C-F>           : 历史命令记录的窗口
+
+## Subject 正则
+http://tanqisen.github.io/blog/2013/01/13/vim-search-replace-regex/
+### 简单替换表达式
+
+`:[range]s/from/to/[flags]`  
+  
+* `range`:搜索范围，如果没有指定范围，则作用于但前行。  
+  
+1. :1,10s/from/to/ 表示在第1到第10行（包含第1，第10行）之间搜索替换；  
+1. :10s/from/to/ 表示只在第10行搜索替换；  
+1. :%s/from/to/ 表示在所有行中搜索替换；  
+1. 1,$s/from/to/ 同上。  
+* `flags` 有如下四个选项：  
+  
+1. c confirm，每次替换前询问；  
+2. e error， 不显示错误；  
+3. g globle，不询问，整行替换。如果不加g选项，则只替换每行的第一个匹配到的字符串；  
+4. i ignore，忽略大小写。  
+这些选项可以合并使用，如cgi表示不区分大小写，整行替换，替换前询问。  
 
 ## 光标移动：
 `\`.`  跳转到最近修改过的位置并定位编辑点  
@@ -194,7 +250,7 @@ xp交换当前字符和其后一个字符
 
 ## 撤销和重做：u / ctrl+r
 
-## 大小写转换
+## Subject 大小写转换
 * ~ 将光标下的字母改变大小写
 * 3~    将光标位置开始的3个字母改变其大小写
 * g\~\~   改变当前行字母的大小写
@@ -277,39 +333,44 @@ vimdiff file1 file2 ..  #等同于上一句
 vim中执行shell中的命令,只需要在":"后面加"!"再敲shell中的命令即可,如:":!ls"
 
 ## map
+* 官网： 
+    http://vimcdoc.sourceforge.net/doc/map.html#map.txt
+    http://vimcdoc.sourceforge.net/doc/usr_05.html#05.3  
+    http://vimcdoc.sourceforge.net/doc/usr_40.html#40.1  
+
 <Esc>代表Escape键:<CR>代表Enter键；<D>代表Command键。
 Alt键可以使用<M-key>或<A-key>来表示。<C>代表Ctrl.
 对于组合键，可以用<C-Esc>代表Ctrl-Esc；使用<S-F1>表示Shift-F1.
+比如: 
+```
+        :map <F2> a<C-R>=strftime("%c")<CR><Esc>
+```
+这个映射会在光标之后追加当前的日期和时间 (用 <> 记法  <> )。
 
-使用下表中不同形式的map命令，可以针对特定的模式设置键盘映射：
+如果你要交换两个键的含义，应该使用 :noremap 命令。例如: 
+   :noremap k j
+   :noremap j k
 
 ## 控制命令：
 * :!command
 * :!ls 列出当前目录下文件
 * :suspend或Ctrl - Z 挂起vim，回到shell，按fg可以返回vim。  
+\'.               : 跳到最后修改的那一行 (超级有用)(ft,怎么又是这个评价)
+`.               : 不仅跳到最后修改的那一行，还要定位到修改点
+<C-O>            : 依次沿着你的跳转记录向回跳 (从最近的一次开始)
+<C-I>            : 依次沿着你的跳转记录向前跳
+:ju(mps)         : 列出你跳转的足迹
+:help jump-motions
+:history         : 列出历史命令记录
+:his c           : 命令行命令历史
+:his s           : 搜索命令历史
+q/               : 搜索命令历史的窗口
+q:               : 命令行命令历史的窗口
+:<C-F>           : 历史命令记录的窗口
 
-# 插入模式下的命令
+## 插入模式下的命令
 Ctrl-d 删除当前行的缩进
 
-## Subject 正则
-http://tanqisen.github.io/blog/2013/01/13/vim-search-replace-regex/
-### 简单替换表达式
-
-`:[range]s/from/to/[flags]`  
-  
-* `range`:搜索范围，如果没有指定范围，则作用于但前行。  
-  
-1. :1,10s/from/to/ 表示在第1到第10行（包含第1，第10行）之间搜索替换；  
-1. :10s/from/to/ 表示只在第10行搜索替换；  
-1. :%s/from/to/ 表示在所有行中搜索替换；  
-1. 1,$s/from/to/ 同上。  
-* `flags` 有如下四个选项：  
-  
-1. c confirm，每次替换前询问；  
-2. e error， 不显示错误；  
-3. g globle，不询问，整行替换。如果不加g选项，则只替换每行的第一个匹配到的字符串；  
-4. i ignore，忽略大小写。  
-这些选项可以合并使用，如cgi表示不区分大小写，整行替换，替换前询问。  
 
 ## Subject NERDTree
 http://yang3wei.github.io/blog/2013/01/29/nerdtree-kuai-jie-jian-ji-lu/
@@ -595,6 +656,9 @@ fi
     BreadTripMacPro:BreadBnb breadtripmacpro$ echo $branch1
     master
     ```
+    ```
+    b=$(git log --pretty=format:"%ar : %s" -3)
+    ```
     实际应用：
     ``` bash
 branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
@@ -602,6 +666,40 @@ if [ $branch = 'develop' ]
 then
 	curl -F "file=@/Users/Shared/Jenkins/Home/workspace/BreadtripBnbAndroid/app/build/outputs/apk/pub/release/app-pub-release.apk" -F "uKey=xxx" -F "_api_key=xxx" https://qiniu-storage.pgyer.com/apiv1/app/upload
 fi
+    ```
+    ci自动打包脚本：
+    ```
+. ~/.bash_profile
+branch=$(git branch | grep "\*")
+echo "branch$branch"
+#c_date=$(cat /Users/Shared/Jenkins/Home/workspace/BreadtripBnbAndroid/../compile_date)
+c_date="2017-10-01 00:00:00"
+#commit_msg=$(git log \--since="\"$c_date\"" \--pretty=format:"%ar : %s")
+commit_msg=$(git log \--since="$(cat $BNB_HOME/../compile_date)" --pretty=format:"%ar : %s")
+key_commit="bug"
+if [ $branch = 'develop' ]
+then
+    curl -F "file=@/Users/Shared/Jenkins/Home/workspace/BreadtripBnbAndroid/app/build/outputs/apk/pub/release/app-pub-release.apk" -F "uKey=06cbc51f101c6b67d3710ae1dc3f88aa" -F "_api_key=5a68ab76abcbe216db7da53fdcc56dc0" -F "updateDescription=branch:develop $commit_msg" https://qiniu-storage.pgyer.com/apiv1/app/upload
+else
+    if [[ $commit_msg == *$key_commit* ]]
+    then
+    	echo "++++++++++"
+        curl -F "file=@/Users/Shared/Jenkins/Home/workspace/BreadtripBnbAndroid/app/build/outputs/apk/dev/release/app-dev-release.apk" -F "uKey=06cbc51f101c6b67d3710ae1dc3f88aa" -F "_api_key=5a68ab76abcbe216db7da53fdcc56dc0" -F "updateDescription=$commit_msg" https://qiniu-storage.pgyer.com/apiv1/app/upload
+    else
+    	echo "=========="
+        echo "don't package commit: $commit_msg"
+    fi
+fi
+
+#git log --since="$(cat $BNB_HOME/../compile_date)" --stat > $BNB_HOME/../commit_log
+git log --since="2017-09-28 12:00:00" --pretty=format:"%an, %ar : %s" > $BNB_HOME/../commit_log
+cat $BNB_HOME/../commit_log
+echo "input to email"
+#python /Users/breadtripmacpro/android/ci/send_email.py
+python /Users/breadtripmacpro/android/ci/send_email.py
+echo `date +%Y-%m-%d\ %H:%M:%S` > $BNB_HOME/../compile_date
+cat $BNB_HOME/../compile_date
+echo "saved"
     ```
 ### shell打印当前时间
 ``` bash
@@ -611,6 +709,7 @@ $ echo `date +%Y-%m-%d\ %H:%M:%S`
 ### shell从文件读内容到变量
 有文件名为cm_time
 mytime=$(cat cm_time)就把文件内容读到了mytime变量中
+
 
 ## vim折叠
 http://vimcdoc.sourceforge.net/doc/usr_28.html#usr_28.txt
@@ -698,3 +797,101 @@ git log --since="2017-08-01 00:00:00" 显示自从指定时间点到现在的log
 2017年 9月14日 星期四 12时25分02秒 CST
 2017年 9月14日 星期四 12时25分14秒 CST
 2017年 9月14日 星期四 12时25分29秒 CST
+
+## vim创建新的命令
+http://vimcdoc.sourceforge.net/doc/usr_40.html#usr_40.txt
+
+宏定义
+## iskeyword
+'iskeyword        '选项定义了一个word中可以包含哪些字符:"@"在这里代指所有的字母. "48-57"指ASCII码从48到57的那些字符, 即0到9. "192-255"是可打印拉丁字母.
+可以在vim中执行`:set iskeyword?`查看当前的iskeyword。他的缩写是isk。`:set isk?`
+## vim缩写
+官网参考：http://vimcdoc.sourceforge.net/doc/map.html#abbreviations
+引自：http://yyq123.blogspot.jp/2010/12/vim-abbreviation.html
+利用:ab[breviate]缩写命令，我们可以用一个缩写来代替一组字符，此后只要输入缩写，就可以自动插入其代表的字符串以提高输入效率。
+### 设置缩写
+使用以下命令，将定义ad来代替advertisement：
+```
+:abbreviate ad advertisement
+```
+当想要输入advertisement时，只要输入ad，然后：
+    * 如果按下Ctrl-]键，可以输入advertisement并停留在插入模式；
+    * 如果按下Esc键，将插入扩展字符并返回命令模式；
+    * 如果按下Space或Enter键，那么将在插入扩展字符后，自动增加空格或回车，并停留在插入模式。
+### 不同模式下的缩写
+使用下表中不同形式的abbreviate命令，可以针对特定的模式设置缩写：
+
+Command 命令 | Insert Only 插入模式 | Command Line 命令行模式
+:abbreviate  | y                    | y
+:iabbrev     | y                    |
+:cabbrev     |                      | y
+
+### 缩写实例
+我们可以为多个单词设置缩写。例如以下命令，将设置Jack Berry的缩写为JB。
+```
+:abbreviate AS Android Studio
+# 或者简写为:ab AS Android Studio
+```
+如果你编写程序，那么利用以下设置，可以加快添加注释的速度：
+```
+:ab #b /**********************
+
+:ab #e **********************/
+```
+如果你设计网页，那么利用以下缩写可以快速增加标签。其中<CR><LF>将在标签间自动插入换行，以方便你继续输入内容。
+```
+:iab p <p><CR><LF></p>
+```
+利用以下命令，我们甚至还可以定位光标所处的位置：
+```
+:iab icode <code class="inset">!cursor!</code><Esc>:call search('!cursor!','b')<CR>cf!
+```
+我们还可定义命令缩写。例如以下命令，将在新的标签页中显示帮助信息：
+```
+#在命令行中执行`:h`回车即可
+:cabbrev h tab h
+```
+** 我们可以将常用的缩写命令定义在vimrc配置文件之中，它们将在Vim启动时自动装载，而不需要再逐一重新定义。
+
+### 查看缩写
+使用:abbreviate命令，将列出所有缩写定义，其中第一列显示缩写的类型：
+标记 | 模式
+!    | 插入模式，命令行模式
+i    | 插入模式
+c    | 命令模式
+### 取消缩写
+可以使用以下命令，移除某个缩写：
+```
+#或简写为:una ad，取消ad缩写
+:unabbreviate ad
+```
+针对不同模式下的缩写，需要使用与其相对应的unabbreviate命令。例如：使用:iunabbreviate命令，取消插入模式下的缩写，而:iabclear命令则会清除所有插入模式的缩写定义；依此类推，取消和清除命令行模式下的缩写，则需要使用:cunabbreviate和:cabclear命令。
+
+如果想要清除所有缩写，可以使用以下命令：
+```
+:abclear
+```
+命令小结
+:abbreviate   | 定义缩写
+:unabbreviate | 取消缩写
+:abclear      | 清除所有缩写
+
+## 快速插入已经编辑过的词
+敲出开头后按ctrl + p可以出现提示，范围是vim缓存的文件的词
+
+## Linux curl命令详解
+http://www.cnblogs.com/duhuo/p/5695256.html
+示例：
+``` bash
+$ curl -s http://ip.cn
+当前 IP：203.100.80.45 来自：北京市 世通在线
+$ curl -s http://ip.cn -i
+HTTP/1.1 200 OK
+Server: nginx/1.11.9
+Date: Sat, 30 Sep 2017 06:45:22 GMT
+Content-Type: text/html; charset=UTF-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+```
+
+

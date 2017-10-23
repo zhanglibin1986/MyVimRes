@@ -51,10 +51,10 @@ set foldlevelstart=99
 "au BufRead *.py map <buffer> <F5> :w<CR>:!/usr/bin/env python % <CR>    ".vimrc文件里加这个配置，按F5即可运行当前.py文件
 
 imap <C-CR> <ESC>o
-inoremap ( ()<ESC>i
+"inoremap ( ()<ESC>i
 "inoremap ' ''<ESC>i
-inoremap [ []<ESC>i
-inoremap { {}<ESC>i
+"inoremap [ []<ESC>i
+"inoremap { {}<ESC>i
 " Ctrl+N 打开/关闭
 map <F2> :NERDTreeToggle<CR>
 "map <C-n> :NERDTreeToggle<CR>
@@ -87,4 +87,9 @@ nnoremap <Leader>b :echo "Hello"<CR>
 "ctrl + w + w 在nerdtree侧栏打开时切换焦点
 nnoremap <Leader>a <C-W><C-W> 
 nnoremap <Leader>l :EasyAlign *|
-
+"set omnifunc=syntaxcomplete#Complete
+"输入```时，出一对，并且中间留空行光标定位到空行的插入模式
+ab ``` ```<CR><CR>```<ESC>ki
+iab font <font color=></font><ESC>0f=a
+iab img {% asset_img  %}<ESC>0fgla
+iab bl {% blockquote %} {% endblockquote %}<ESC>3bh
