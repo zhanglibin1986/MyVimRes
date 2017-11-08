@@ -19,6 +19,7 @@ Plugin 'plasticboy/vim-markdown'
 Plugin 'suan/vim-instant-markdown'
 "vim-markdown-toc目录生成插件
 Plugin 'mzlogin/vim-markdown-toc'
+Plugin 'CodeFalling/fcitx-vim-osx'
 "Install Plugins:run :PluginInstall
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -90,6 +91,32 @@ nnoremap <Leader>l :EasyAlign *|
 "set omnifunc=syntaxcomplete#Complete
 "输入```时，出一对，并且中间留空行光标定位到空行的插入模式
 ab ``` ```<CR><CR>```<ESC>ki
-iab font <font color=></font><ESC>0f=a
+iab font <font color=></font><ESC>F=a
 iab img {% asset_img  %}<ESC>0fgla
-iab bl {% blockquote %} {% endblockquote %}<ESC>3bh
+iab bl {% blockquote %}{% endblockquote %}<ESC>F}
+
+let g:input_toggle = 1
+function! Fcitx2en()
+   let s:input_status = system("fcitx-remote")
+   if s:input_status == 2
+      let g:input_toggle = 1
+      let l:a = system("fcitx-remote -c")
+   endif
+endfunction
+
+function! Fcitx2zh()
+   let s:input_status = system("fcitx-remote")
+   if s:input_status != 2 && g:input_toggle == 1
+      let l:a = system("fcitx-remote -o")
+      let g:input_toggle = 0
+   endif
+endfunction
+
+"设置 Vim ttimeoutlen 选项为较小值（如100），否则退出插入模式时会有较严重的延迟
+set timeoutlen=150 ttimeoutlen=0
+"离开插入模式时切换为英文
+autocmd InsertLeave * call Fcitx2en()
+"进入插入模式时切换为中文
+autocmd InsertEnter * call Fcitx2zh()
+
+

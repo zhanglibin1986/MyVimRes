@@ -44,10 +44,6 @@
         * [脚本的存放位置](#脚本的存放位置)
         * [脚本变量规则](#脚本变量规则)
         * [将命令的输出赋值给shell的变量](#将命令的输出赋值给shell的变量)
-* [c_date=$(cat /Users/Shared/Jenkins/Home/workspace/BreadtripBnbAndroid/../compile_date)](#c_datecat-userssharedjenkinshomeworkspacebreadtripbnbandroidcompile_date)
-* [commit_msg=$(git log \--since="\"$c_date\"" \--pretty=format:"%ar : %s")](#commit_msggit-log---sincec_date---prettyformatar--s)
-* [git log --since="$(cat $BNB_HOME/../compile_date)" --stat > $BNB_HOME/../commit_log](#git-log---sincecat-bnb_homecompile_date---stat--bnb_homecommit_log)
-* [python /Users/breadtripmacpro/android/ci/send_email.py](#python-usersbreadtripmacproandroidcisend_emailpy)
         * [shell打印当前时间](#shell打印当前时间)
         * [shell从文件读内容到变量](#shell从文件读内容到变量)
     * [vim折叠](#vim折叠)
@@ -71,6 +67,14 @@
         * [取消缩写](#取消缩写)
     * [快速插入已经编辑过的词](#快速插入已经编辑过的词)
     * [Linux curl命令详解](#linux-curl命令详解)
+    * [Vim实用技巧](#vim实用技巧)
+    * [退出插入模式时输入法自动切换为英文状态](#退出插入模式时输入法自动切换为英文状态)
+    * [查找时设置大小写敏感性](#查找时设置大小写敏感性)
+    * [搜索智能忽略大小写](#搜索智能忽略大小写)
+    * [vim快捷键](#vim快捷键)
+        * [插入模式下](#插入模式下)
+        * [重复操作](#重复操作)
+        * [跳转](#跳转)
 
 <!-- vim-markdown-toc -->
 # Vim note
@@ -232,8 +236,9 @@ n)/}           光标向下移动n句/段落
 
 ## 滚屏：
 ctrl+e/y文字向上向下滚动
-z./zz 滚动屏幕使光标所在行居中，区别是前者光标会定位到行首而后者不会
-z<cr>将光标所在行滚动至屏幕顶端（<cr>是回车键-.-!）
+z.或zz 滚动屏幕使光标所在行居中，区别是前者光标会定位到行首而后者不会
+zt或z<cr>将光标所在行滚动至屏幕顶端（<cr>是回车键-.-!）
+zb将光标所在行滚动至屏幕低端
 
 
 
@@ -672,9 +677,7 @@ fi
 . ~/.bash_profile
 branch=$(git branch | grep "\*")
 echo "branch$branch"
-#c_date=$(cat /Users/Shared/Jenkins/Home/workspace/BreadtripBnbAndroid/../compile_date)
 c_date="2017-10-01 00:00:00"
-#commit_msg=$(git log \--since="\"$c_date\"" \--pretty=format:"%ar : %s")
 commit_msg=$(git log \--since="$(cat $BNB_HOME/../compile_date)" --pretty=format:"%ar : %s")
 key_commit="bug"
 if [ $branch = 'develop' ]
@@ -691,11 +694,9 @@ else
     fi
 fi
 
-#git log --since="$(cat $BNB_HOME/../compile_date)" --stat > $BNB_HOME/../commit_log
 git log --since="2017-09-28 12:00:00" --pretty=format:"%an, %ar : %s" > $BNB_HOME/../commit_log
 cat $BNB_HOME/../commit_log
 echo "input to email"
-#python /Users/breadtripmacpro/android/ci/send_email.py
 python /Users/breadtripmacpro/android/ci/send_email.py
 echo `date +%Y-%m-%d\ %H:%M:%S` > $BNB_HOME/../compile_date
 cat $BNB_HOME/../compile_date
@@ -881,6 +882,29 @@ c    | 命令模式
 
 ## Linux curl命令详解
 http://www.cnblogs.com/duhuo/p/5695256.html
+在Linux中curl是一个利用URL规则在命令行下工作的文件传输工具，可以说是一款很强大的http命令行工具。它支持文件的上传和下载，是综合传输工具，但按传统，习惯称url为下载工具。
+```
+语法：# curl [option] [url]
+```
+常见参数：
+```
+-A/--user-agent <string>              设置用户代理发送给服务器
+-b/--cookie <name=string/file>    cookie字符串或文件读取位置
+-c/--cookie-jar <file>                    操作结束后把cookie写入到这个文件中
+-C/--continue-at <offset>            断点续转
+-D/--dump-header <file>              把header信息写入到该文件中
+-e/--referer                                  来源网址
+-f/--fail                                          连接失败时不显示http错误
+-o/--output                                  把输出写到该文件中
+-O/--remote-name                      把输出写到该文件中，保留远程文件的文件名
+-r/--range <range>                      检索来自HTTP/1.1或FTP服务器字节范围
+-s/--silent                                    静音模式。不输出任何东西
+-T/--upload-file <file>                  上传文件
+-u/--user <user[:password]>      设置服务器的用户和密码
+-w/--write-out [format]                什么输出完成后
+-x/--proxy <host[:port]>              在给定的端口上使用HTTP代理
+-#/--progress-bar                        进度条显示当前的传送状态
+```
 示例：
 ``` bash
 $ curl -s http://ip.cn
@@ -893,5 +917,247 @@ Content-Type: text/html; charset=UTF-8
 Transfer-Encoding: chunked
 Connection: keep-alive
 ```
+
+
+1、基本用法
+执行后，www.linux.com 的html就会显示在屏幕上了
+Ps：由于安装linux的时候很多时候是没有安装桌面的，也意味着没有浏览器，因此这个方法也经常用于测试一台服务器是否可以到达一个网站
+
+2、保存访问的网页
+2.1:使用linux的重定向功能保存
+
+* curl http://www.linux.com >> linux.html
+2.2:可以使用curl的内置option:-o(小写)保存网页
+
+$ curl -o linux.html http://www.linux.com
+执行完成后会显示如下界面，显示100%则表示保存成功
+
+% Total    % Received % Xferd  Average Speed  Time    Time    Time  Current
+                                Dload  Upload  Total  Spent    Left  Speed
+                                100 79684    0 79684    0    0  3437k      0 --:--:-- --:--:-- --:--:-- 7781k
+                                2.3:可以使用curl的内置option:-O(大写)保存网页中的文件
+                                要注意这里后面的url要具体到某个文件，不然抓不下来
+
+* curl -O http://www.linux.com/hello.sh
+3、测试网页返回值
+
+* curl -o /dev/null -s -w %{http_code} www.linux.com
+Ps:在脚本中，这是很常见的测试网站是否正常的用法
+
+4、指定proxy服务器以及其端口
+很多时候上网需要用到代理服务器(比如是使用代理服务器上网或者因为使用curl别人网站而被别人屏蔽IP地址的时候)，幸运的是curl通过使用内置option：-x来支持设置代理
+
+* curl -x 192.168.100.100:1080 http://www.linux.com
+5、cookie
+有些网站是使用cookie来记录session信息。对于chrome这样的浏览器，可以轻易处理cookie信息，但在curl中只要增加相关参数也是可以很容易的处理cookie
+5.1:保存http的response里面的cookie信息。内置option:-c（小写）
+
+* curl -c cookiec.txt  http://www.linux.com
+执行后cookie信息就被存到了cookiec.txt里面了
+
+5.2:保存http的response里面的header信息。内置option: -D
+
+* curl -D cookied.txt http://www.linux.com
+执行后cookie信息就被存到了cookied.txt里面了
+
+注意：-c(小写)产生的cookie和-D里面的cookie是不一样的。
+
+
+5.3:使用cookie
+很多网站都是通过监视你的cookie信息来判断你是否按规矩访问他们的网站的，因此我们需要使用保存的cookie信息。内置option: -b
+
+* curl -b cookiec.txt http://www.linux.com
+6、模仿浏览器
+有些网站需要使用特定的浏览器去访问他们，有些还需要使用某些特定的版本。curl内置option:-A可以让我们指定浏览器去访问网站
+
+* curl -A "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.0)" http://www.linux.com
+这样服务器端就会认为是使用IE8.0去访问的
+
+7、伪造referer（盗链）
+很多服务器会检查http访问的referer从而来控制访问。比如：你是先访问首页，然后再访问首页中的邮箱页面，这里访问邮箱的referer地址就是访问首页成功后的页面地址，如果服务器发现对邮箱页面访问的referer地址不是首页的地址，就断定那是个盗连了
+curl中内置option：-e可以让我们设定referer
+
+* curl -e "www.linux.com" http://mail.linux.com
+这样就会让服务器其以为你是从www.linux.com点击某个链接过来的
+
+8、下载文件
+8.1：利用curl下载文件。
+*使用内置option：-o(小写)
+
+* curl -o dodo1.jpg http:www.linux.com/dodo1.JPG
+*使用内置option：-O（大写)
+
+* curl -O http://www.linux.com/dodo1.JPG
+这样就会以服务器上的名称保存文件到本地
+
+8.2：循环下载
+有时候下载图片可以能是前面的部分名称是一样的，就最后的尾椎名不一样
+
+* curl -O http://www.linux.com/dodo[1-5].JPG
+这样就会把dodo1，dodo2，dodo3，dodo4，dodo5全部保存下来
+
+8.3：下载重命名
+
+* curl -O http://www.linux.com/{hello,bb}/dodo[1-5].JPG
+由于下载的hello与bb中的文件名都是dodo1，dodo2，dodo3，dodo4，dodo5。因此第二次下载的会把第一次下载的覆盖，这样就需要对文件进行重命名。
+
+* curl -o #1_#2.JPG http://www.linux.com/{hello,bb}/dodo[1-5].JPG
+这样在hello/dodo1.JPG的文件下载下来就会变成hello_dodo1.JPG,其他文件依此类推，从而有效的避免了文件被覆盖
+
+8.4：分块下载
+有时候下载的东西会比较大，这个时候我们可以分段下载。使用内置option：-r
+
+* curl -r 0-100 -o dodo1_part1.JPG http://www.linux.com/dodo1.JPG
+* curl -r 100-200 -o dodo1_part2.JPG http://www.linux.com/dodo1.JPG
+* curl -r 200- -o dodo1_part3.JPG http://www.linux.com/dodo1.JPG
+* cat dodo1_part* > dodo1.JPG
+这样就可以查看dodo1.JPG的内容了
+
+8.5：通过ftp下载文件
+curl可以通过ftp下载文件，curl提供两种从ftp中下载的语法
+
+* curl -O -u 用户名:密码 ftp://www.linux.com/dodo1.JPG
+* curl -O ftp://用户名:密码@www.linux.com/dodo1.JPG
+8.6：显示下载进度条
+
+* curl -# -O http://www.linux.com/dodo1.JPG
+8.7：不会显示下载进度信息
+
+* curl -s -O http://www.linux.com/dodo1.JPG
+9、断点续传
+在windows中，我们可以使用迅雷这样的软件进行断点续传。curl可以通过内置option:-C同样可以达到相同的效果
+如果在下载dodo1.JPG的过程中突然掉线了，可以使用以下的方式续传
+
+* curl -C -O http://www.linux.com/dodo1.JPG
+10、上传文件
+curl不仅仅可以下载文件，还可以上传文件。通过内置option:-T来实现
+
+* curl -T dodo1.JPG -u 用户名:密码 ftp://www.linux.com/img/
+这样就向ftp服务器上传了文件dodo1.JPG
+
+11、显示抓取错误
+
+* curl -f http://www.linux.com/error
+其他参数(此处翻译为转载)：‘
+
+
+
+`.               : 不仅跳到最后修改的那一行，还要定位到修改点
+<C-O>            : 依次沿着你的跳转记录向回跳 (从最近的一次开始)
+<C-I>            : 依次沿着你的跳转记录向前跳
+:ju(mps)         : 列出你跳转的足迹
+:help jump-motions
+:history         : 列出历史命令记录
+:his c           : 命令行命令历史
+:his s           : 搜索命令历史
+q/               : 搜索命令历史的窗口
+q:               : 命令行命令历史的窗口
+:<C-F>           : 历史命令记录的窗口
+
+## Vim实用技巧
+1. 将制定文件加入到vim缓冲区列表
+```
+:args ~/myblog/source/_post/*.md
+```
+2. 查看缓存区列表：
+```
+:ls # % 符号指明哪个缓冲区在当前窗口中可见,而 # 符号则代表轮换文件。按 <C-^> 可以在当前文件和轮换文件间快速切换
+```
+
+3. 打开缓存列表中的文件
+```
+:buffer num
+```
+4. 切换缓存文件
+```
+bn # 下一个bnext
+bp # 上一个bprevious
+bl # 最后一个blast
+bf # 第一个bfirst
+```
+5. 删除缓存文件
+```
+:bd N1 N2 N3 # bd是bdelete的缩写
+:N,M bdelete
+```
+6. 执行shell命令
+```
+:!ls
+```
+7. `:read !pwd` 将命令的标准输出重定向到缓冲区。
+
+/Users/zhanglibin/Dropbox
+8. `:write!{cmd}` 把缓冲区内容作为指定{cmd}的标准输入。
+`:write !sh` 把缓冲区的内容传给外部的sh命令作为标准输入。
+:write! sh` 把缓冲区的内容写到一个名为sh的文件。 
+9.<C-w>s命令可以水平切分此窗口。<C-w>v命令可以垂直切分此窗口。
+10. :e[dit] {filename}  把另外一个缓冲区载入活动窗口中。
+11. :sp[lit] {file} 水平切分窗口，载入file
+12. vs[plit] {file} 垂直切分窗口，载入file
+13. 窗口切换：
+* <C-w>w
+* <C-w>h
+* <C-w>j
+* <C-w>k
+* <C-w>l
+14. 关闭窗口
+* clo[se] 关闭活动窗口
+* on[ly] 只保留活动窗口
+15. 改变窗口大小及重新排列窗口
+16. 把当前单词插入到命令行
+<C-r><C-w>
+17. 快速批量查找替换
+先将光标移动到要替换的单词上面，然后按*高亮其他部分，cw{word}<Esc>执行一个地方的修改,最后关键的一步
+```
+:%s//<C-r><C-w>/g
+```
+把所有单词替换为word。
+
+## 退出插入模式时输入法自动切换为英文状态
+安装fcitx-remote-for-osx https://github.com/lilydjwg/fcitx.vim
+在.vimrc文件中添加代码
+```
+set timeoutlen=150 ttimeoutlen=0
+"离开插入模式时切换为英文
+autocmd InsertLeave * call Fcitx2en()
+"进入插入模式时切换为中文
+autocmd InsertEnter * call Fcitx2zh()
+```
+
+## 查找时设置大小写敏感性
+\c忽略大小写
+\C强制区分大小写
+
+## 搜索智能忽略大小写
+set ignorecase smartcase    
+如果我们的模式全是由小写字母组成的,就会按照大小写的方式进行查找,但我们只要输入一个大写字母,查找方式就会变成区分大小写的了。
+## vim快捷键
+C - 删除光标位置到行尾的内容并进入插入模式 (相当于c$ 或cc) 
+r - 修改光标所在字符，然后返回普通模式 
+R - 进入覆盖模式 
+S - 删除光标所在行并进入插入模式
+> 增加缩进
+< 减少缩进
+:regs 命令可以列出当前所有寄存器的内容
+Ctrl + a 数字加一
+Ctrl + x 数字减一
+
+### 插入模式下
+Ctrl + r * 插入系统粘贴板的内容（效果等于Ctrl + r +）
+Ctrl+r 0 - 插入前一次用y命令寄存的内容 
+Ctrl+r <寄存器名称> - 插入指定寄存器的内容
+Ctrl+a - 插入前一次插入模式所键入的内容
+
+### 重复操作 
+* 普通模式下按. （小数点）可重复上一次的修改操作 
+* & - 重复上一次的:s替换命令 
+* @@ - 重复上一次执行的宏 
+
+### 跳转
+Ctrl+] 跳转到当前标识符的定义位置 （相当于在当前光标位置的单词上按住ctrl用鼠标点击） 
+Ctrl+o 回退一步 (go back) 
+Ctrl+i 前进一步 (go forward) 
+`. 跳转到之前修改位置 
+`` 在前一次跳转位置与当前位置间切换
 
 
