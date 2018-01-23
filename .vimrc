@@ -117,6 +117,6 @@ set timeoutlen=150 ttimeoutlen=0
 "离开插入模式时切换为英文
 autocmd InsertLeave * call Fcitx2en()
 "进入插入模式时切换为中文
-autocmd InsertEnter * call Fcitx2zh()
+"autocmd InsertEnter * call Fcitx2zh()
 
 
