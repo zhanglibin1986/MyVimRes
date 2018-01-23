@@ -75,6 +75,8 @@
         * [插入模式下](#插入模式下)
         * [重复操作](#重复操作)
         * [跳转](#跳转)
+    * [输入回车的方法](#输入回车的方法)
+    * [swap文件的处理](#swap文件的处理)
 
 <!-- vim-markdown-toc -->
 # Vim note
@@ -711,6 +713,10 @@ $ echo `date +%Y-%m-%d\ %H:%M:%S`
 有文件名为cm_time
 mytime=$(cat cm_time)就把文件内容读到了mytime变量中
 
+shell example:
+if [ $(ps -ef | grep -c "ssh") -gt 1 ]; then echo "true"; fi
+
+
 
 ## vim折叠
 http://vimcdoc.sourceforge.net/doc/usr_28.html#usr_28.txt
@@ -1042,7 +1048,7 @@ curl不仅仅可以下载文件，还可以上传文件。通过内置option:-T�
 
 
 
-`.               : 不仅跳到最后修改的那一行，还要定位到修改点
+\`.               : 不仅跳到最后修改的那一行，还要定位到修改点
 <C-O>            : 依次沿着你的跳转记录向回跳 (从最近的一次开始)
 <C-I>            : 依次沿着你的跳转记录向前跳
 :ju(mps)         : 列出你跳转的足迹
@@ -1089,7 +1095,7 @@ bf # 第一个bfirst
 /Users/zhanglibin/Dropbox
 8. `:write!{cmd}` 把缓冲区内容作为指定{cmd}的标准输入。
 `:write !sh` 把缓冲区的内容传给外部的sh命令作为标准输入。
-:write! sh` 把缓冲区的内容写到一个名为sh的文件。 
+`:write! sh` 把缓冲区的内容写到一个名为sh的文件。 
 9.<C-w>s命令可以水平切分此窗口。<C-w>v命令可以垂直切分此窗口。
 10. :e[dit] {filename}  把另外一个缓冲区载入活动窗口中。
 11. :sp[lit] {file} 水平切分窗口，载入file
@@ -1108,19 +1114,22 @@ bf # 第一个bfirst
 <C-r><C-w>
 17. 快速批量查找替换
 先将光标移动到要替换的单词上面，然后按*高亮其他部分，cw{word}<Esc>执行一个地方的修改,最后关键的一步
+
 ```
 :%s//<C-r><C-w>/g
 ```
+
 把所有单词替换为word。
 
 ## 退出插入模式时输入法自动切换为英文状态
 安装fcitx-remote-for-osx https://github.com/lilydjwg/fcitx.vim
 在.vimrc文件中添加代码
+
 ```
 set timeoutlen=150 ttimeoutlen=0
-"离开插入模式时切换为英文
+离开插入模式时切换为英文
 autocmd InsertLeave * call Fcitx2en()
-"进入插入模式时切换为中文
+进入插入模式时切换为中文
 autocmd InsertEnter * call Fcitx2zh()
 ```
 
@@ -1159,5 +1168,18 @@ Ctrl+o 回退一步 (go back)
 Ctrl+i 前进一步 (go forward) 
 `. 跳转到之前修改位置 
 `` 在前一次跳转位置与当前位置间切换
+
+## 输入回车的方法
+回车在vim的输入方法是ctrl+V,会得到^,此时再按回车.会得到^M这个就是回车了
+
+## swap文件的处理
+上次异常关闭vim或者打开了两份这个文件都会提示有一个.xxx.swap的文件存在。这时要做的就是确认一下不是同时打开了两份文件。如果不是的话，应该就是由于上次异常关闭vim产生的，swap文件。
+swap文件会一直保存当时关闭时的文件内容，注意是一直。不管你如果修改恢复源文件这个swap始终都是异常关闭时的内容。
+
+丢失内容的情况：
+慎用EditAnyWay，
+此时编辑之时，如果swap中有未保存的内容的时候，文件中将不会有这部分内容。除非你用Recovery。
+
+当确认正常恢复了文件之后一定要及时删掉swap文件，不然下次再误恢复的话，有可能会丢失内容。
 
 
