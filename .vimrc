@@ -90,7 +90,7 @@ nnoremap <Leader>a <C-W><C-W>
 nnoremap <Leader>l :EasyAlign *|
 "set omnifunc=syntaxcomplete#Complete
 "输入```时，出一对，并且中间留空行光标定位到空行的插入模式
-ab ``` ```<CR><CR>```<ESC>ki
+"ab ``` ```<CR><CR>```<ESC>ki
 iab font <font color=></font><ESC>F=a
 iab img {% asset_img  %}<ESC>0fgla
 iab bl {% blockquote %}{% endblockquote %}<ESC>F}
@@ -118,5 +118,4 @@ set timeoutlen=150 ttimeoutlen=0
 autocmd InsertLeave * call Fcitx2en()
 "进入插入模式时切换为中文
 "autocmd InsertEnter * call Fcitx2zh()
-
-
+"iab xdt <c-r>=strftime("%H:%M")<cr>

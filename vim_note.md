@@ -77,6 +77,9 @@
         * [跳转](#跳转)
     * [输入回车的方法](#输入回车的方法)
     * [swap文件的处理](#swap文件的处理)
+        * [Linux中查找命令](#linux中查找命令)
+    * [给vim每行前面加上行号：【:%s/^/\=line('.')/】](#给vim每行前面加上行号sline)
+        * [给可选行加上行号并且从编号42开始：【:'<,'>s/^/\=(line('.')-line("'<")+42)/】](#给可选行加上行号并且从编号42开始sline-line42)
 
 <!-- vim-markdown-toc -->
 # Vim note
@@ -374,6 +377,7 @@ Alt键可以使用<M-key>或<A-key>来表示。<C>代表Ctrl.
 q/               : 搜索命令历史的窗口
 q:               : 命令行命令历史的窗口
 :<C-F>           : 历史命令记录的窗口
+vim xxx +100 打开文件并定位到100行
 
 ## 插入模式下的命令
 Ctrl-d 删除当前行的缩进
@@ -1181,5 +1185,25 @@ swap文件会一直保存当时关闭时的文件内容，注意是一直。不�
 此时编辑之时，如果swap中有未保存的内容的时候，文件中将不会有这部分内容。除非你用Recovery。
 
 当确认正常恢复了文件之后一定要及时删掉swap文件，不然下次再误恢复的话，有可能会丢失内容。
+
+### Linux中查找命令
+  查找当前目录以下两层以内的含有"blinksetting"的所有文件：
+``` bash
+   grep -l 'blinksetting' ./*/*
+   grep -A<行数> ''
+   grep -A 5 'grep' vim_note.md
+```
+
+
+## 给vim每行前面加上行号：【:%s/^/\=line('.')/】
+### 给可选行加上行号并且从编号42开始：【:'<,'>s/^/\=(line('.')-line("'<")+42)/】
+* If you want to add a string between the number and the old text from the line, just concatenate (with . in VimL) it to the number-expression:
+```
+:'<,'>s/^/\=(line('.')-line("'<")+42).' --> '/
+```
+* If you need this to sort as text, you may want to zero pad the results, which can be done using printf for 0001, 0002 ... instead of 1, 2... eg:
+```
+:%s/^/\=printf('%04d', line('.'))/
+```
 
 
