@@ -16,7 +16,7 @@ Plugin 'junegunn/vim-easy-align'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 "markdown实时预览插件
-Plugin 'suan/vim-instant-markdown'
+"Plugin 'suan/vim-instant-markdown'
 "vim-markdown-toc目录生成插件
 Plugin 'mzlogin/vim-markdown-toc'
 Plugin 'CodeFalling/fcitx-vim-osx'
