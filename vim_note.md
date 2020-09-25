@@ -54,7 +54,7 @@
         * [vim命令](#vim命令)
         * [选中文本命令](#选中文本命令)
         * [git log](#git-log)
-    * [软链接硬链接](#软链接硬链接)
+    * [软链接硬链接(https://www.ibm.com/developerworks/cn/linux/l-cn-hardandsymb-links/index.html)](#软链接硬链接httpswwwibmcomdeveloperworkscnlinuxl-cn-hardandsymb-linksindexhtml)
         * [查看某个文件的软硬链接](#查看某个文件的软硬链接)
     * [vim 插入当前日期时间](#vim-插入当前日期时间)
     * [vim创建新的命令](#vim创建新的命令)
@@ -796,7 +796,7 @@ git log --graph --oneline --all
 git log -2 显示两条记录  
 git log --since="2017-08-01 00:00:00" 显示自从指定时间点到现在的log  
 
-## 软链接硬链接
+## 软链接硬链接(https://www.ibm.com/developerworks/cn/linux/l-cn-hardandsymb-links/index.html)
 ### 查看某个文件的软硬链接
 ## vim 插入当前日期时间
     `:.!date`  
